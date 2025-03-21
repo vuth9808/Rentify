@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.10.0",
+    "@radix-ui/react-slot": "^1.1.2",
     "@tanstack/react-query": "^5.21.7",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.0.1",
