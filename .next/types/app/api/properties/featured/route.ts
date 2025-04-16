@@ -1,4 +1,4 @@
-// File: C:\TO_HOANG_VU\UTH\phong-tro\app\api\properties\featured\route.ts
+// File: D:\projects\rentifyclone-version2\Rentify-FS\app\api\properties\featured\route.ts
 import * as entry from '../../../../../../app/api/properties/featured/route.js'
 import type { NextRequest } from 'next/server.js'
 

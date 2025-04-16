@@ -1,10 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/properties/[id]/route": "app/api/properties/[id]/route.js",
-  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
-  "/api/properties/featured/route": "app/api/properties/featured/route.js",
-  "/api/properties/route": "app/api/properties/route.js",
   "/page": "app/page.js",
-  "/api/user/properties/route": "app/api/user/properties/route.js",
-  "/api/amenities/route": "app/api/amenities/route.js"
+  "/auth/login/page": "app/auth/login/page.js",
+  "/auth/register/page": "app/auth/register/page.js",
+  "/api/properties/featured/route": "app/api/properties/featured/route.js",
+  "/_not-found/page": "app/_not-found/page.js"
 }

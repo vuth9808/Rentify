@@ -1,4 +1,4 @@
-// File: C:\TO_HOANG_VU\UTH\phong-tro\app\api\auth\[...nextauth]\route.ts
+// File: D:\projects\rentifyclone-version2\Rentify-FS\app\api\auth\[...nextauth]\route.ts
 import * as entry from '../../../../../../app/api/auth/[...nextauth]/route.js'
 import type { NextRequest } from 'next/server.js'
 
