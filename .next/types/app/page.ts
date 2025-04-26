@@ -1,4 +1,4 @@
-// File: C:\TO_HOANG_VU\UTH\phong-tro\app\page.tsx
+// File: D:\projects\rentifyclone-version2\Rentify-FS\app\page.tsx
 import * as entry from '../../../app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
