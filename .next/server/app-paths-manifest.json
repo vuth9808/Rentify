@@ -1,7 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/auth/login/page": "app/auth/login/page.js",
-  "/auth/register/page": "app/auth/register/page.js",
-  "/api/properties/featured/route": "app/api/properties/featured/route.js",
-  "/_not-found/page": "app/_not-found/page.js"
-}
