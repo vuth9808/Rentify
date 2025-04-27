@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiSearch, FiMapPin, FiDollarSign, FiHome } from 'react-icons/fi';
+import { priceRanges, propertyTypes } from '@/constants/filters';
 
 type SearchBarProps = {
   className?: string;
@@ -51,7 +52,7 @@ export default function SearchBar({ className = '' }: SearchBarProps) {
         </div>
         
         <div className="flex-1">
-          <label htmlFor="price" className="sr-only">
+          <label htmlFor="price" className="sr-only text-gray-800">
             Khoảng giá
           </label>
           <div className="relative">
@@ -60,16 +61,20 @@ export default function SearchBar({ className = '' }: SearchBarProps) {
             </div>
             <select
               id="price"
-              className="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none"
+              className="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none font-medium text-gray-800"
               value={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
             >
-              <option value="">Khoảng giá</option>
-              <option value="0-2000000">Dưới 2 triệu</option>
-              <option value="2000000-3000000">2 - 3 triệu</option>
-              <option value="3000000-5000000">3 - 5 triệu</option>
-              <option value="5000000-10000000">5 - 10 triệu</option>
-              <option value="10000000-0">Trên 10 triệu</option>
+              {priceRanges.map((range, idx) => (
+                <option
+                  key={range.value}
+                  value={range.value}
+                  disabled={idx === 0 && priceRange === ''}
+                  selected={idx === 0 && priceRange === ''}
+                >
+                  {range.label}
+                </option>
+              ))}
             </select>
           </div>
         </div>
@@ -84,16 +89,20 @@ export default function SearchBar({ className = '' }: SearchBarProps) {
             </div>
             <select
               id="type"
-              className="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none"
+              className="w-full pl-10 pr-3 py-2.5 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 appearance-none font-medium text-gray-800"
               value={propertyType}
               onChange={(e) => setPropertyType(e.target.value)}
             >
-              <option value="">Loại phòng</option>
-              <option value="phong-tro">Phòng trọ</option>
-              <option value="chung-cu-mini">Chung cư mini</option>
-              <option value="nha-nguyen-can">Nhà nguyên căn</option>
-              <option value="can-ho">Căn hộ</option>
-              <option value="o-ghep">Ở ghép</option>
+              {propertyTypes.map((type, idx) => (
+                <option
+                  key={type.value}
+                  value={type.value}
+                  disabled={idx === 0 && propertyType === ''}
+                  selected={idx === 0 && propertyType === ''}
+                >
+                  {type.label}
+                </option>
+              ))}
             </select>
           </div>
         </div>

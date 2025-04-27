@@ -9,20 +9,22 @@ interface RoomCardProps {
   price: number
   address: string
   area: number
-  imageUrl: string
+  imageUrl?: string // Làm cho imageUrl là optional
 }
 
 export default function RoomCard({ id, title, price, address, area, imageUrl }: RoomCardProps) {
   return (
     <Link href={`/listings/${id}`}>
       <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-        <div className="relative h-48">
-          <Image
-            src={imageUrl}
-            alt={title}
-            fill
-            className="object-cover"
-          />
+        <div className="relative h-48 bg-gray-200">
+          {imageUrl && (
+            <Image
+              src={imageUrl}
+              alt={title}
+              fill
+              className="object-cover"
+            />
+          )}
         </div>
         <div className="p-4">
           <h3 className="text-lg font-semibold mb-2">{title}</h3>

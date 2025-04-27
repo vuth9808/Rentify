@@ -1,83 +1,135 @@
 'use client'
 
-const districts = [
-  'Quận 1', 'Quận 3', 'Quận 4', 'Quận 5', 'Quận 6', 'Quận 7', 'Quận 8', 'Quận 10', 
-  'Quận 11', 'Quận 12', 'Quận Bình Tân', 'Quận Bình Thạnh', 'Quận Gò Vấp', 
-  'Quận Phú Nhuận', 'Quận Tân Bình', 'Quận Tân Phú', 'Quận Thủ Đức'
-]
-
-const priceRanges = [
-  { label: 'Tất cả', value: '' },
-  { label: 'Dưới 2 triệu', value: '0-2000000' },
-  { label: '2 - 3 triệu', value: '2000000-3000000' },
-  { label: '3 - 5 triệu', value: '3000000-5000000' },
-  { label: '5 - 7 triệu', value: '5000000-7000000' },
-  { label: '7 - 10 triệu', value: '7000000-10000000' },
-  { label: '10 - 15 triệu', value: '10000000-15000000' },
-  { label: 'Trên 15 triệu', value: '15000000-999999999' }
-]
-
-const areaRanges = [
-  { label: 'Tất cả', value: '' },
-  { label: 'Dưới 20m²', value: '0-20' },
-  { label: '20 - 30m²', value: '20-30' },
-  { label: '30 - 50m²', value: '30-50' },
-  { label: '50 - 70m²', value: '50-70' },
-  { label: '70 - 90m²', value: '70-90' },
-  { label: 'Trên 90m²', value: '90-999' }
-]
+import { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { Button } from "@/components/ui/button"
+import { priceRanges } from '@/constants/filters'
 
 export default function AdvancedFilter() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  // Lấy giá trị hiện tại từ URL
+  const currentPrice = searchParams.get('price') || '';
+  const currentType = searchParams.get('type') || '';
+  const currentArea = searchParams.get('area') || '';
+  const currentDistrict = searchParams.get('district') || '';
+
+  // State cho các bộ lọc
+  const [selectedPrice, setSelectedPrice] = useState(currentPrice);
+  const [selectedArea, setSelectedArea] = useState(currentArea);
+  const [selectedDistrict, setSelectedDistrict] = useState(currentDistrict);
+  const [selectedType, setSelectedType] = useState(currentType);
+
+  // Xử lý khi nhấn nút tìm kiếm
+  const handleSearch = () => {
+    // Tạo đối tượng URLSearchParams để xử lý các tham số URL
+    const params = new URLSearchParams();
+    
+    // Thêm các tham số đã chọn vào URL
+    if (selectedPrice) params.set('price', selectedPrice);
+    if (selectedArea) params.set('area', selectedArea);
+    if (selectedDistrict) params.set('district', selectedDistrict);
+    if (selectedType) params.set('type', selectedType);
+    
+    // Chuyển hướng đến URL mới với các tham số lọc
+    router.push(`/listings?${params.toString()}`);
+  };
+
+  // Xử lý khi nhấn nút reset
+  const handleReset = () => {
+    setSelectedPrice('');
+    setSelectedArea('');
+    setSelectedDistrict('');
+    setSelectedType('');
+    router.push('/listings');
+  };
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-      <h2 className="text-xl font-semibold mb-4">Lọc nâng cao</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Khoảng giá */}
+    <div className="bg-white p-4 rounded-lg shadow-md mb-6">
+      <h2 className="text-lg font-semibold mb-4">Lọc nâng cao</h2>
+      
+      <div className="grid grid-cols-2 md:grid-cols-6 gap-4 items-end">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Khoảng giá
-          </label>
-          <select className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-            {priceRanges.map(range => (
+          <label className="block text-sm font-medium mb-1">Khoảng giá</label>
+          <select 
+            value={selectedPrice} 
+            onChange={(e) => setSelectedPrice(e.target.value)}
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Chọn khoảng giá</option>
+            {priceRanges.map((range) => (
               <option key={range.value} value={range.value}>
                 {range.label}
               </option>
             ))}
           </select>
         </div>
-
-        {/* Diện tích */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Diện tích
-          </label>
-          <select className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-            {areaRanges.map(range => (
-              <option key={range.value} value={range.value}>
-                {range.label}
-              </option>
-            ))}
+          <label className="block text-sm font-medium mb-1">Diện tích</label>
+          <select 
+            value={selectedArea} 
+            onChange={(e) => setSelectedArea(e.target.value)}
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Chọn diện tích</option>
+            <option value="0-20">Dưới 20m²</option>
+            <option value="20-30">20m² - 30m²</option>
+            <option value="30-50">30m² - 50m²</option>
+            <option value="50-0">Trên 50m²</option>
           </select>
         </div>
-
-        {/* Quận/Huyện */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Quận/Huyện
-          </label>
-          <select className="w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary">
-            <option value="">Tất cả</option>
-            {districts.map(district => (
-              <option key={district} value={district}>{district}</option>
-            ))}
+          <label className="block text-sm font-medium mb-1">Quận/Huyện</label>
+          <select 
+            value={selectedDistrict} 
+            onChange={(e) => setSelectedDistrict(e.target.value)}
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Chọn quận/huyện</option>
+            <option value="quan-1">Quận 1</option>
+            <option value="quan-2">Quận 2</option>
+            <option value="quan-3">Quận 3</option>
+            <option value="quan-4">Quận 4</option>
+            <option value="quan-5">Quận 5</option>
+            <option value="quan-6">Quận 6</option>
+            <option value="quan-7">Quận 7</option>
+            <option value="quan-8">Quận 8</option>
+            <option value="quan-9">Quận 9</option>
+            <option value="quan-10">Quận 10</option>
+            <option value="quan-11">Quận 11</option>
+            <option value="quan-12">Quận 12</option>
+            <option value="quan-binh-thanh">Bình Thạnh</option>
+            <option value="quan-phu-nhuan">Phú Nhuận</option>
+            <option value="quan-go-vap">Gò Vấp</option>
+            <option value="quan-tan-binh">Tân Bình</option>
+            <option value="quan-tan-phu">Tân Phú</option>
+            <option value="quan-binh-tan">Bình Tân</option>
+            <option value="quan-thu-duc">Thủ Đức</option>
+            <option value="huyen-nha-be">Nhà Bè</option>
+            <option value="huyen-binh-chanh">Bình Chánh</option>
+            <option value="huyen-hoc-mon">Hóc Môn</option>
+            <option value="huyen-cu-chi">Củ Chi</option>
+            <option value="huyen-can-gio">Cần Giờ</option>
           </select>
         </div>
-
-        {/* Nút tìm kiếm */}
-        <div className="flex items-end">
-          <button className="w-full bg-primary text-white py-2 px-4 rounded-md hover:bg-primary-dark transition-colors">
-            Tìm kiếm
-          </button>
+        <div>
+          <label className="block text-sm font-medium mb-1">Loại phòng</label>
+          <select 
+            value={selectedType} 
+            onChange={(e) => setSelectedType(e.target.value)}
+            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Chọn loại phòng</option>
+            <option value="phong-tro">Phòng trọ</option>
+            <option value="can-ho">Căn hộ</option>
+            <option value="nha-nguyen-can">Nhà nguyên căn</option>
+            <option value="chung-cu-mini">Chung cư mini</option>
+          </select>
+        </div>
+        <div className="flex space-x-2 col-span-2 md:col-span-2">
+          <Button variant="outline" onClick={handleReset} className="w-1/2">Xóa bộ lọc</Button>
+          <Button onClick={handleSearch} className="w-1/2">Tìm kiếm</Button>
         </div>
       </div>
     </div>
