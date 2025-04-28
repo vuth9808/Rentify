@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { FiMenu, FiX, FiUser, FiHeart, FiMessageSquare } from 'react-icons/fi';
-import { useAuth } from '@/contexts/AuthContext';
+import { useSession, signOut } from 'next-auth/react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { toast } from 'react-hot-toast';
 
 const navigation = [
   { name: 'Trang chủ', href: '/' },
@@ -19,15 +20,27 @@ const navigation = [
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const { user, loading, logout } = useAuth();
+  const { data: session, status } = useSession();
+  const loading = status === 'loading';
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await signOut();
       setIsOpen(false);
     } catch (error) {
       console.error('Logout failed:', error);
     }
+  };
+
+  const handleCreateListing = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (status !== 'authenticated') {
+      toast.error('Vui lòng đăng nhập để đăng tin');
+      router.push('/auth/login');
+      return;
+    }
+    router.push('/create-listing');
   };
 
   return (
@@ -52,17 +65,32 @@ export default function Navbar() {
           <div className="hidden md:block">
             <div className="flex items-center ml-10 space-x-4">
               {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
-                    pathname === item.href
-                      ? 'text-primary-600 bg-primary-50'
-                      : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
-                  }`}
-                >
-                  {item.name}
-                </Link>
+                (item.name === 'Đăng tin' ? (
+                  <a
+                    key={item.name}
+                    href="/create-listing"
+                    onClick={handleCreateListing}
+                    className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                      pathname === item.href
+                        ? 'text-primary-600 bg-primary-50'
+                        : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {item.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className={`px-3 py-2 text-sm font-medium rounded-md transition-colors duration-200 ${
+                      pathname === item.href
+                        ? 'text-primary-600 bg-primary-50'
+                        : 'text-gray-700 hover:text-primary-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {item.name}
+                  </Link>
+                ))
               ))}
             </div>
           </div>
@@ -72,7 +100,7 @@ export default function Navbar() {
             <div className="flex items-center ml-4 space-x-4">
               {loading ? (
                 <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse" />
-              ) : user ? (
+              ) : session ? (
                 <>
                   <Link href="/favorites" className="text-gray-500 hover:text-primary-600 transition-colors duration-200">
                     <div className="relative">
@@ -196,7 +224,7 @@ export default function Navbar() {
                 <div className="px-3 py-2">
                   <div className="w-24 h-6 bg-gray-200 rounded animate-pulse" />
                 </div>
-              ) : user ? (
+              ) : session ? (
                 <div className="pt-4 pb-3 border-t border-gray-200">
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
@@ -205,8 +233,8 @@ export default function Navbar() {
                       </div>
                     </div>
                     <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800">{user.name}</div>
-                      <div className="text-sm font-medium text-gray-500">{user.email}</div>
+                      <div className="text-base font-medium text-gray-800">{session.user.name}</div>
+                      <div className="text-sm font-medium text-gray-500">{session.user.email}</div>
                     </div>
                   </div>
                   <div className="px-2 mt-3 space-y-1">

@@ -49,15 +49,21 @@ export default function RegisterForm() {
         }),
       });
 
-      const responseData = await response.json();
+      let responseData: any = null;
+      try {
+        responseData = await response.json();
+      } catch (e) {
+        setError('Có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.');
+        return;
+      }
 
       if (!response.ok) {
-        if (responseData.code === 'EMAIL_EXISTS') {
+        if (responseData?.code === 'EMAIL_EXISTS') {
           setError('Email này đã được sử dụng. Vui lòng chọn email khác.');
-        } else if (responseData.code === 'INVALID_INPUT') {
+        } else if (responseData?.code === 'INVALID_INPUT') {
           setError('Thông tin không hợp lệ. Vui lòng kiểm tra lại.');
         } else {
-          setError('Có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.');
+          setError(responseData?.error || 'Có lỗi xảy ra khi đăng ký. Vui lòng thử lại sau.');
         }
         return;
       }
