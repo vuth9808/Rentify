@@ -16,7 +16,7 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prismadb"
 import getCurrentUser from "@/app/actions/getCurrentUser"
-import { Image, Listing, User } from "@/types"
+import { Image, User } from "@/types"
 
 // GET /api/listings - Lấy danh sách phòng trọ
 export async function GET(request: Request) {
@@ -24,19 +24,19 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     
     // Xây dựng query filters
-    const where = {}
+    const where: any = {}
     
     // Thêm các điều kiện lọc từ searchParams
     if (searchParams.has('userId')) {
       where.userId = searchParams.get('userId')
     }
     
-    if (searchParams.has('category')) {
-      where.category = searchParams.get('category')
+    if (searchParams.has('propertyType')) {
+      where.propertyType = searchParams.get('propertyType')
     }
     
     // Query database với filters
-    const listings = await prisma.listing.findMany({
+    const listings = await prisma.property.findMany({
       where,
       include: {
         user: true,
@@ -67,11 +67,11 @@ export async function POST(request: Request) {
       bathrooms,
       price,
       locationValue,
-      utilities,
-      amenities,
       area,
       type,
       address,
+      city,
+      district,
       phone,
       latitude,
       longitude,
@@ -81,36 +81,30 @@ export async function POST(request: Request) {
       return new NextResponse("Unauthorized", { status: 401 })
     }
 
-    const listing = await prisma.listing.create({
+    const property = await prisma.property.create({
       data: {
         title,
         description,
-        imageSrc,
-        roomCount,
-        bathroomCount,
         bedrooms,
         bathrooms,
         price: parseInt(price, 10),
-        locationValue,
-        utilities,
-        amenities,
-        area: parseInt(area, 10),
-        type,
+        area: parseFloat(area),
+        propertyType: type,
         address,
-        phone,
+        city,
+        district,
         latitude,
         longitude,
         userId: currentUser.id,
         images: {
           create: images.map((image: Image) => ({
-            url: image.url,
-            publicId: image.publicId
+            url: image.url
           }))
         }
       }
     })
 
-    return NextResponse.json(listing)
+    return NextResponse.json(property)
   } catch (error) {
     console.error("[LISTINGS_POST]", error)
     return new NextResponse("Internal error", { status: 500 })

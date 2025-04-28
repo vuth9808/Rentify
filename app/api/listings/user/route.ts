@@ -4,7 +4,7 @@ import { authOptions } from "@/lib/auth"
 import prisma from "@/lib/prismadb"
 import { Prisma } from "@prisma/client"
 import getCurrentUser from "@/app/actions/getCurrentUser"
-import { Image, Listing, User } from "@/types"
+import { Image, User } from "@/types"
 
 const ROOM_SAMPLES = [
   "room1",
@@ -23,7 +23,7 @@ export async function GET(request: Request) {
       return NextResponse.error();
     }
 
-    const listings = await prisma.listing.findMany({
+    const listings = await prisma.property.findMany({
       where: {
         userId: currentUser.id
       },

@@ -8,16 +8,13 @@ import { vi } from "date-fns/locale";
 import { CldImage } from 'next-cloudinary';
 
 import useCountries from "@/hooks/useCountries";
-import { 
-  SafeListing,
-  SafeUser
-} from "@/types";
+import { SafeUser } from "@/types";
 
 import HeartButton from "../HeartButton";
 import Button from "../Button";
 
 interface ListingCardProps {
-  data: SafeListing;
+  data: any;
   currentUser?: SafeUser | null;
 }
 

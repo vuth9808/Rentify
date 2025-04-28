@@ -37,7 +37,7 @@ export default function AdvancedFilters() {
 
   // Cập nhật state từ URL search params
   useEffect(() => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams.toString());
     setMaxPrice(params.get('maxPrice') || '');
     setMaxArea(params.get('maxArea') || '');
     setSelectedType(params.get('type') || '');
