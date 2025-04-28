@@ -1,9 +1,12 @@
 "use client"
 
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation"
 import { FaUserCircle } from "react-icons/fa"
 
-export default function AuthPage() {
+export const dynamic = "force-dynamic";
+
+function AuthContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const error = searchParams.get('error')
@@ -44,15 +47,17 @@ export default function AuthPage() {
           </button>
         </div>
 
-        <div className="mt-6 text-center">
-          <button
-            onClick={() => router.push('/')}
-            className="text-sm text-teal-600 hover:text-teal-500"
-          >
-            Quay về trang chủ
-          </button>
-        </div>
+        <button
+          onClick={() => router.push('/')}
+          className="text-sm text-teal-600 hover:text-teal-500"
+        >
+          Quay về trang chủ
+        </button>
       </div>
     </div>
   )
+}
+
+export default function AuthPage() {
+  return <Suspense><AuthContent /></Suspense>;
 } 

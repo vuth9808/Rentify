@@ -3,11 +3,6 @@
 import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
 
-import SearchModal from '@/components/modals/SearchModal';
-import RentModal from '@/components/modals/RentModal';
-import LoginModal from '@/components/modals/LoginModal';
-import RegisterModal from '@/components/modals/RegisterModal';
-
 import useLoginModal from '@/hooks/useLoginModal';
 import useRegisterModal from '@/hooks/useRegisterModal';
 
@@ -31,10 +26,9 @@ const ModalProvider = () => {
 
   return (
     <>
-      <SearchModal />
-      <RentModal />
-      <LoginModal />
-      <RegisterModal />
+      {/* <RentModal /> */}
+      {/* <LoginModal /> */}
+      {/* <RegisterModal /> */}
     </>
   );
 };

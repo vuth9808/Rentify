@@ -3,10 +3,9 @@ import prisma from "@/lib/prismadb";
 
 export async function GET(request: Request) {
   try {
-    const rooms = await prisma.listing.findMany({
+    const rooms = await prisma.property.findMany({
       include: {
-        images: true,
-        location: true,
+        images: true
       },
       orderBy: {
         createdAt: 'desc'

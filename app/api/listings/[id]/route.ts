@@ -6,13 +6,12 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const listing = await prisma.listing.findUnique({
+    const listing = await prisma.property.findUnique({
       where: {
         id: params.id
       },
       include: {
         images: true,
-        location: true,
         user: {
           select: {
             name: true,

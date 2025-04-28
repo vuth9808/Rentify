@@ -1,12 +1,12 @@
 'use client';
 
-import { SafeListing, SafeUser } from "@/types";
+import { SafeUser } from "@/types";
 import Container from "../Container";
 import Heading from "../Heading";
 import ListingCard from "./ListingCard";
 
 interface MyListingsClientProps {
-  listings: SafeListing[];
+  listings: any[];
   currentUser?: SafeUser | null;
 }
 
@@ -31,7 +31,7 @@ const MyListingsClient: React.FC<MyListingsClientProps> = ({
         2xl:grid-cols-6
         gap-8
       ">
-        {listings.map((listing: SafeListing) => (
+        {listings.map((listing: any) => (
           <ListingCard
             key={listing.id}
             data={listing}

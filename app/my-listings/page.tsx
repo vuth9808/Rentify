@@ -26,10 +26,23 @@ export default async function MyListingsPage() {
     );
   }
 
+  const safeUser = {
+    ...currentUser,
+    createdAt: new Date(currentUser.createdAt),
+    updatedAt: new Date(currentUser.updatedAt),
+    emailVerified: currentUser.emailVerified ? new Date(currentUser.emailVerified) : null,
+    name: currentUser.name || '',
+    image: currentUser.image || undefined,
+    hashedPassword: currentUser.hashedPassword || undefined,
+    favoriteIds: [],
+    listings: [],
+    reservations: [],
+  };
+
   return (
     <MyListingsClient
       listings={listings}
-      currentUser={currentUser}
+      currentUser={safeUser}
     />
   );
 } 

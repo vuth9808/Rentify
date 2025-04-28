@@ -26,10 +26,17 @@ export default async function FavoritesPage() {
     return <EmptyState title="Không tìm thấy người dùng" />;
   }
 
-  const favorites = await prisma.listing.findMany({
+  // Lấy danh sách propertyId mà user đã yêu thích
+  const favoriteRecords = await prisma.favorite.findMany({
+    where: { userId: currentUser.id },
+    select: { propertyId: true }
+  });
+  const favoriteIds = favoriteRecords.map(fav => fav.propertyId);
+
+  const favorites = await prisma.property.findMany({
     where: {
       id: {
-        in: currentUser.favoriteIds
+        in: favoriteIds
       }
     },
     include: {
@@ -73,7 +80,6 @@ export default async function FavoritesPage() {
             <ListingCard
               key={listing.id}
               data={listing}
-              currentUser={safeUser}
             />
           ))}
         </div>
