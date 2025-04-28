@@ -65,13 +65,9 @@ export default function SearchBar({ className = '' }: SearchBarProps) {
               value={priceRange}
               onChange={(e) => setPriceRange(e.target.value)}
             >
-              {priceRanges.map((range, idx) => (
-                <option
-                  key={range.value}
-                  value={range.value}
-                  disabled={idx === 0 && priceRange === ''}
-                  selected={idx === 0 && priceRange === ''}
-                >
+              <option value="">Chọn khoảng giá</option>
+              {priceRanges.map((range) => (
+                <option key={range.value} value={range.value}>
                   {range.label}
                 </option>
               ))}
@@ -93,13 +89,9 @@ export default function SearchBar({ className = '' }: SearchBarProps) {
               value={propertyType}
               onChange={(e) => setPropertyType(e.target.value)}
             >
-              {propertyTypes.map((type, idx) => (
-                <option
-                  key={type.value}
-                  value={type.value}
-                  disabled={idx === 0 && propertyType === ''}
-                  selected={idx === 0 && propertyType === ''}
-                >
+              <option value="">Chọn loại phòng</option>
+              {propertyTypes.map((type) => (
+                <option key={type.value} value={type.value}>
                   {type.label}
                 </option>
               ))}

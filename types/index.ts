@@ -57,4 +57,18 @@ export interface Property {
     image?: string;
   };
   amenities: PropertyAmenity[];
-} 
+}
+
+export type SafeUser = {
+  id: string;
+  name: string;
+  email: string;
+  image?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  emailVerified?: Date | null;
+  hashedPassword?: string;
+  favoriteIds: string[];
+  listings: any[];
+  reservations: any[];
+}; 
