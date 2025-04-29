@@ -24,11 +24,6 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom{
     private EntityManager entityManager;
 
     public static void joinExecute(BuildingSearchBuilder buildingSearchBuilder, StringBuilder sql) {
-        List<String> typeCode = buildingSearchBuilder.getTypeCode();
-        if (typeCode != null && typeCode.size() != 0) {
-            sql.append(" INNER JOIN buildingrenttype ON b.id = buildingrenttype.buildingid ");
-            sql.append(" INNER JOIN renttype ON renttype.id = buildingrenttype.renttypeid ");
-        }
         Long staffId = buildingSearchBuilder.getStaffId();
         if (staffId != null) {
             sql.append(" INNER JOIN assignmentbuilding ON b.id = assignmentbuilding.buildingid ");
@@ -41,8 +36,8 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom{
             for (Field item : fields) {
                 item.setAccessible(true);
                 String fieldName = item.getName();
-                if (!fieldName.equals("staffId") && !fieldName.equals("typeCode") && !fieldName.startsWith("area")
-                        && !fieldName.startsWith("rentPrice") && !fieldName.equals("managerPhoneNumber")) {
+                if (!fieldName.equals("staffId") && !fieldName.startsWith("area") && !fieldName.startsWith("rentPrice")
+                        && !fieldName.equals("managerPhoneNumber") && !fieldName.equals("district")) {
                     Object value = item.get(buildingSearchBuilder);
                     if (value != null) {
                         if (item.getType().getName().equals("java.lang.Long") || item.getType().getName().equals("java.lang.Integer")) {
@@ -88,7 +83,7 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom{
         List<String> typeCode = buildingSearchBuilder.getTypeCode();
         if (typeCode != null && typeCode.size() != 0) {
             where.append(" AND(");
-            String sql = typeCode.stream().map(it -> "renttype.code LIKE" + "'%" + it + "%' ")
+            String sql = typeCode.stream().map(it -> "type LIKE" + "'%" + it + "%' ")
                     .collect(Collectors.joining(" OR "));
             where.append(sql);
             where.append(" ) ");
@@ -97,6 +92,11 @@ public class BuildingRepositoryImpl implements BuildingRepositoryCustom{
         String managerPhoneNumber = buildingSearchBuilder.getManagerPhoneNumber();
         if (StringUtils.check(managerPhoneNumber)) {
             where.append(" AND b.managerphone = '" + managerPhoneNumber + "' ");
+        }
+
+        String district = buildingSearchBuilder.getDistrict();
+        if (StringUtils.check(district)) {
+            where.append(" AND b.district = '" + district + "' ");
         }
 
     }
