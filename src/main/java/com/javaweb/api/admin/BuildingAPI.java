@@ -18,8 +18,6 @@ import java.util.List;
 public class BuildingAPI {
     @Autowired
     private BuildingService buildingService;
-//    @Autowired
-//    private AssignmentBuildingService assignmentBuildingService;
     @GetMapping
     public List<BuildingSearchResponse> getBuilding(@ModelAttribute BuildingSearchRequest buildingSearchRequest, Pageable pageable) {
         List<BuildingSearchResponse> res = buildingService.findAll(buildingSearchRequest, pageable);

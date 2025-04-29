@@ -26,7 +26,11 @@
             <div class="page-content">
                 <div class="page-header">
                     <h1>
-                        Thêm Hoặc Sửa Tòa Nhà
+                        Dashboard
+                        <small>
+                            <i class="ace-icon fa fa-angle-double-right"></i>
+                            overview &amp; stats
+                        </small>
                     </h1>
                 </div><!-- /.page-header -->
 
@@ -93,6 +97,8 @@
                                         <form:input class="form-control" path="direction"/>
                                     </div>
                                 </div>
+
+
 
                                 <div class="form-group">
                                     <label class="col-xs-3">Diện tích thuê</label>
@@ -225,7 +231,7 @@
                                     <input class="col-sm-3 no-padding-right" type="file" id="uploadImage" />
                                     <div class="col-sm-9">
                                         <c:if test="${not empty buildingEdit.image}">
-                                            <c:set var="imagePath" value="/repository/${buildingEdit.image}" />
+                                            <c:set var="imagePath" value="/repository${buildingEdit.image}" />
                                             <img src="${imagePath}" id="viewImage" width="300px" height="300px" style="border: 1px solid #ccc;" />
                                         </c:if>
                                         <c:if test="${empty buildingEdit.image}">
