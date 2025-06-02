@@ -107,6 +107,6 @@ Project Link: [https://github.com/vuth9808/rentify-2](https://github.com/vuth980
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
-## 📞 Contact
+## ✉️ Contact
 
 TO HOANG VU - [tohoangvu161225@gmail.com](tohoangvu161225@gmail.com)
